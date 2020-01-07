@@ -52,6 +52,7 @@ const PickerPropTypes = {
   autoFocus: PropTypes.bool,
   custom: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.string,
       name: PropTypes.string.isRequired,
       short_names: PropTypes.arrayOf(PropTypes.string).isRequired,
       emoticons: PropTypes.arrayOf(PropTypes.string),

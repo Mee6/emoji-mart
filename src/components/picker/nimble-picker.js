@@ -97,7 +97,7 @@ export default class NimblePicker extends React.PureComponent {
         const customEmoji = {
           ...emoji,
           // `<Category />` expects emoji to have an `id`.
-          id: emoji.short_names[0],
+          id: emoji.id ? emoji.id : emoji.short_names[0],
           custom: true,
         }
 
@@ -105,9 +105,8 @@ export default class NimblePicker extends React.PureComponent {
         this.CUSTOM.push(customEmoji)
       })
 
-      allCategories = allCategories.concat(
-        Object.keys(customCategories).map((key) => customCategories[key]),
-      )
+      const customCategoriesList = Object.keys(customCategories).map((key) => customCategories[key]);
+      allCategories = customCategoriesList.concat(allCategories);
     }
 
     this.hideRecent = true
