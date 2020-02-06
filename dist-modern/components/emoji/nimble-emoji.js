@@ -138,8 +138,8 @@ const NimbleEmoji = props => {
     if (data.spriteUrl) {
       style = _extends({}, style, {
         backgroundImage: `url(${data.spriteUrl})`,
-        backgroundSize: `${100 * props.sheetColumns}% ${100 * props.sheetRows}%`,
-        backgroundPosition: _getPosition(props)
+        backgroundSize: `${100 * (data.sheetColumns || 1)}% ${100 * (data.sheetRows || 1)}%`,
+        backgroundPosition: _getPosition(_extends({}, props, { sheetColumns: data.sheetColumns || 1, sheetRows: data.sheetRows || 1 }))
       });
     } else {
       style = _extends({}, style, {

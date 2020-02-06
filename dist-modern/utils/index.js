@@ -25,7 +25,13 @@ function sanitize(emoji) {
     unified,
     custom,
     customCategory,
-    imageUrl
+    imageUrl,
+    native,
+    spriteUrl,
+    sheetColumns,
+    sheetRows,
+    sheet_x,
+    sheet_y
   } = emoji,
       id = emoji.id || short_names[0],
       colons = `:${id}:`;
@@ -39,7 +45,13 @@ function sanitize(emoji) {
       emoticons,
       custom,
       customCategory,
-      imageUrl
+      imageUrl,
+      native,
+      spriteUrl,
+      sheetColumns,
+      sheetRows,
+      sheet_x,
+      sheet_y
     };
   }
 
