@@ -1,17 +1,12 @@
-import _Object$keys from '../polyfills/keys';
 import { buildSearch } from './data';
 import stringFromCodePoint from '../polyfills/stringFromCodePoint';
 import { uncompress } from './data';
-
 const COLONS_REGEX = /^(?:\:([^\:]+)\:)(?:\:skin-tone-(\d)\:)?$/;
 const SKINS = ['1F3FA', '1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF'];
-
-const _JSON = JSON; // don't let babel include all of core-js for stringify/parse
 
 function unifiedToNative(unified) {
   var unicodes = unified.split('-'),
       codePoints = unicodes.map(u => `0x${u}`);
-
   return stringFromCodePoint.apply(null, codePoints);
 }
 
@@ -109,7 +104,7 @@ function getData(emoji, skin, set, data) {
     }
   }
 
-  if (!_Object$keys(emojiData).length) {
+  if (!Object.keys(emojiData).length) {
     emojiData = emoji;
     emojiData.custom = true;
 
@@ -122,27 +117,28 @@ function getData(emoji, skin, set, data) {
   emojiData.variations || (emojiData.variations = []);
 
   if (emojiData.skin_variations && skin > 1) {
-    emojiData = _JSON.parse(_JSON.stringify(emojiData));
-
+    emojiData = JSON.parse(JSON.stringify(emojiData));
     var skinKey = SKINS[skin - 1],
         variationData = emojiData.skin_variations[skinKey];
 
-    if (!variationData.variations && emojiData.variations) {
-      delete emojiData.variations;
-    }
+    if (variationData) {
+      if (!variationData.variations && emojiData.variations) {
+        delete emojiData.variations;
+      }
 
-    if (set && (variationData[`has_img_${set}`] == undefined || variationData[`has_img_${set}`]) || !set) {
-      emojiData.skin_tone = skin;
+      if (set && (variationData[`has_img_${set}`] == undefined || variationData[`has_img_${set}`]) || !set) {
+        emojiData.skin_tone = skin;
 
-      for (let k in variationData) {
-        let v = variationData[k];
-        emojiData[k] = v;
+        for (let k in variationData) {
+          let v = variationData[k];
+          emojiData[k] = v;
+        }
       }
     }
   }
 
   if (emojiData.variations && emojiData.variations.length) {
-    emojiData = _JSON.parse(_JSON.stringify(emojiData));
+    emojiData = JSON.parse(JSON.stringify(emojiData));
     emojiData.unified = emojiData.variations.shift();
   }
 
@@ -156,23 +152,19 @@ function getEmojiDataFromNative(nativeString, set, data) {
 
   const skinTones = ['🏻', '🏼', '🏽', '🏾', '🏿'];
   const skinCodes = ['1F3FB', '1F3FC', '1F3FD', '1F3FE', '1F3FF'];
-
   let skin;
   let skinCode;
   let baseNativeString = nativeString;
-
   skinTones.forEach((skinTone, skinToneIndex) => {
     if (nativeString.indexOf(skinTone) > 0) {
       skin = skinToneIndex + 2;
       skinCode = skinCodes[skinToneIndex];
     }
   });
-
   let emojiData;
 
   for (let id in data.emojis) {
     let emoji = data.emojis[id];
-
     let emojiUnified = emoji.unified;
 
     if (emoji.variations && emoji.variations.length) {
@@ -191,7 +183,6 @@ function getEmojiDataFromNative(nativeString, set, data) {
   }
 
   emojiData.id = emojiData.short_names[0];
-
   return getSanitizedData(emojiData, skin, set, data);
 }
 
@@ -200,6 +191,7 @@ function uniq(arr) {
     if (acc.indexOf(item) === -1) {
       acc.push(item);
     }
+
     return acc;
   }, []);
 }
@@ -207,7 +199,6 @@ function uniq(arr) {
 function intersect(a, b) {
   const uniqA = uniq(a);
   const uniqB = uniq(b);
-
   return uniqA.filter(item => uniqB.indexOf(item) >= 0);
 }
 
@@ -230,37 +221,33 @@ function deepMerge(a, b) {
   }
 
   return o;
-}
+} // https://github.com/sonicdoe/measure-scrollbar
 
-// https://github.com/sonicdoe/measure-scrollbar
+
 function measureScrollbar() {
   if (typeof document == 'undefined') return 0;
   const div = document.createElement('div');
-
   div.style.width = '100px';
   div.style.height = '100px';
   div.style.overflow = 'scroll';
   div.style.position = 'absolute';
   div.style.top = '-9999px';
-
   document.body.appendChild(div);
   const scrollbarWidth = div.offsetWidth - div.clientWidth;
   document.body.removeChild(div);
-
   return scrollbarWidth;
-}
-
-// Use requestIdleCallback() if available, else fall back to setTimeout().
+} // Use requestIdleCallback() if available, else fall back to setTimeout().
 // Throttle so as not to run too frequently.
+
+
 function throttleIdleTask(func) {
   const doIdleTask = typeof requestIdleCallback === 'function' ? requestIdleCallback : setTimeout;
-
   let running = false;
-
   return function throttled() {
     if (running) {
       return;
     }
+
     running = true;
     doIdleTask(() => {
       running = false;

@@ -5,9 +5,7 @@ const mapping = {
   has_img_apple: 'd',
   has_img_google: 'e',
   has_img_twitter: 'f',
-  has_img_emojione: 'g',
   has_img_facebook: 'h',
-  has_img_messenger: 'i',
   keywords: 'j',
   sheet: 'k',
   emoticons: 'l',
@@ -24,8 +22,10 @@ const buildSearch = emoji => {
       return;
     }
 
-    ;(Array.isArray(strings) ? strings : [strings]).forEach(string => {
-      ;(split ? string.split(/[-|_|\s]+/) : [string]).forEach(s => {
+    ;
+    (Array.isArray(strings) ? strings : [strings]).forEach(string => {
+      ;
+      (split ? string.split(/[-|_|\s]+/) : [string]).forEach(s => {
         s = s.toLowerCase();
 
         if (search.indexOf(s) == -1) {
@@ -39,7 +39,6 @@ const buildSearch = emoji => {
   addToSearch(emoji.name, true);
   addToSearch(emoji.keywords, false);
   addToSearch(emoji.emoticons, false);
-
   return search.join(',');
 };
 
@@ -48,12 +47,11 @@ const compress = emoji => {
     return short_name !== emoji.short_name;
   });
   delete emoji.short_name;
-
   emoji.sheet = [emoji.sheet_x, emoji.sheet_y];
   delete emoji.sheet_x;
   delete emoji.sheet_y;
-
   emoji.added_in = parseInt(emoji.added_in);
+
   if (emoji.added_in === 6) {
     delete emoji.added_in;
   }
@@ -89,16 +87,12 @@ const uncompress = data => {
 
     if (!emoji.short_names) emoji.short_names = [];
     emoji.short_names.unshift(id);
-
     emoji.sheet_x = emoji.sheet[0];
     emoji.sheet_y = emoji.sheet[1];
     delete emoji.sheet;
-
     if (!emoji.text) emoji.text = '';
-
     if (!emoji.added_in) emoji.added_in = 6;
     emoji.added_in = emoji.added_in.toFixed(1);
-
     emoji.search = buildSearch(emoji);
   }
 };

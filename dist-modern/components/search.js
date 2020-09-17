@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { search as icons } from '../svgs';
 import NimbleEmojiIndex from '../utils/emoji-index/nimble-emoji-index';
 import { throttleIdleTask } from '../utils/index';
-
 let id = 0;
-
 export default class Search extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -15,14 +12,12 @@ export default class Search extends React.PureComponent {
       isSearching: false,
       id: ++id
     };
-
     this.data = props.data;
     this.emojiIndex = new NimbleEmojiIndex(this.data);
     this.setRef = this.setRef.bind(this);
     this.clear = this.clear.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this); // throttle keyboard input so that typing isn't delayed
 
-    // throttle keyboard input so that typing isn't delayed
     this.handleChange = throttleIdleTask(this.handleChange.bind(this));
   }
 
@@ -42,7 +37,6 @@ export default class Search extends React.PureComponent {
       icon: icons.delete,
       isSearching: true
     });
-
     this.props.onSearch(this.emojiIndex.search(value, {
       emojisToShowFilter: this.props.emojisToShowFilter,
       maxResults: this.props.maxResults,
@@ -74,48 +68,47 @@ export default class Search extends React.PureComponent {
   }
 
   render() {
-    const { i18n, autoFocus } = this.props;
-    const { icon, isSearching, id } = this.state;
+    const {
+      i18n,
+      autoFocus
+    } = this.props;
+    const {
+      icon,
+      isSearching,
+      id
+    } = this.state;
     const inputId = `emoji-mart-search-${id}`;
-
-    return React.createElement(
-      'section',
-      { className: 'emoji-mart-search', 'aria-label': i18n.search },
-      React.createElement('input', {
-        id: inputId,
-        ref: this.setRef,
-        type: 'search',
-        onChange: this.handleChange,
-        placeholder: i18n.search,
-        autoFocus: autoFocus
-      }),
-      React.createElement(
-        'label',
-        { className: 'emoji-mart-sr-only', htmlFor: inputId },
-        i18n.search
-      ),
-      React.createElement(
-        'button',
-        {
-          className: 'emoji-mart-search-icon',
-          onClick: this.clear,
-          onKeyUp: this.handleKeyUp,
-          'aria-label': i18n.clear,
-          disabled: !isSearching
-        },
-        icon()
-      )
-    );
+    return /*#__PURE__*/React.createElement("section", {
+      className: "emoji-mart-search",
+      "aria-label": i18n.search
+    }, /*#__PURE__*/React.createElement("input", {
+      id: inputId,
+      ref: this.setRef,
+      type: "search",
+      onChange: this.handleChange,
+      placeholder: i18n.search,
+      autoFocus: autoFocus
+    }), /*#__PURE__*/React.createElement("label", {
+      className: "emoji-mart-sr-only",
+      htmlFor: inputId
+    }, i18n.search), /*#__PURE__*/React.createElement("button", {
+      className: "emoji-mart-search-icon",
+      onClick: this.clear,
+      onKeyUp: this.handleKeyUp,
+      "aria-label": i18n.clear,
+      disabled: !isSearching
+    }, icon()));
   }
-}
 
-Search.propTypes /* remove-proptypes */ = {
+}
+Search.propTypes
+/* remove-proptypes */
+= {
   onSearch: PropTypes.func,
   maxResults: PropTypes.number,
   emojisToShowFilter: PropTypes.func,
   autoFocus: PropTypes.bool
 };
-
 Search.defaultProps = {
   onSearch: () => {},
   maxResults: 75,

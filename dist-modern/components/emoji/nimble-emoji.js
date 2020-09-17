@@ -1,19 +1,32 @@
-import _extends from '../../polyfills/extends';
+import _extends from "@babel/runtime/helpers/extends";
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { getData, getSanitizedData, unifiedToNative } from '../../utils';
 import { uncompress } from '../../utils/data';
 import { EmojiPropTypes } from '../../utils/shared-props';
 import { EmojiDefaultProps } from '../../utils/shared-default-props';
 
 const _getData = props => {
-  var { emoji, skin, set, data } = props;
+  var {
+    emoji,
+    skin,
+    set,
+    data
+  } = props;
   return getData(emoji, skin, set, data);
 };
 
 const _getPosition = props => {
-  var { sheet_x, sheet_y } = _getData(props),
+  var {
+    sheet_x,
+    sheet_y
+  } = _getData(props),
       multiplyX = 100 / (props.sheetColumns - 1),
       multiplyY = 100 / (props.sheetRows - 1);
 
@@ -21,7 +34,12 @@ const _getPosition = props => {
 };
 
 const _getSanitizedData = props => {
-  var { emoji, skin, set, data } = props;
+  var {
+    emoji,
+    skin,
+    set,
+    data
+  } = props;
   return getSanitizedData(emoji, skin, set, data);
 };
 
@@ -29,7 +47,10 @@ const _handleClick = (e, props) => {
   if (!props.onClick) {
     return;
   }
-  var { onClick } = props,
+
+  var {
+    onClick
+  } = props,
       emoji = _getSanitizedData(props);
 
   onClick(emoji, e);
@@ -39,7 +60,10 @@ const _handleOver = (e, props) => {
   if (!props.onOver) {
     return;
   }
-  var { onOver } = props,
+
+  var {
+    onOver
+  } = props,
       emoji = _getSanitizedData(props);
 
   onOver(emoji, e);
@@ -49,7 +73,10 @@ const _handleLeave = (e, props) => {
   if (!props.onLeave) {
     return;
   }
-  var { onLeave } = props,
+
+  var {
+    onLeave
+  } = props,
       emoji = _getSanitizedData(props);
 
   onLeave(emoji, e);
@@ -87,6 +114,7 @@ const NimbleEmoji = props => {
   }
 
   let data = _getData(props);
+
   if (!data) {
     if (props.fallback) {
       return props.fallback(null, props);
@@ -95,13 +123,17 @@ const NimbleEmoji = props => {
     }
   }
 
-  let { unified, custom, short_names, imageUrl } = data,
+  let {
+    unified,
+    custom,
+    short_names,
+    imageUrl
+  } = data,
       style = {},
       children = props.children,
       className = 'emoji-mart-emoji',
       nativeEmoji = unified && unifiedToNative(unified),
-
-  // combine the emoji itself and all shortcodes into an accessible label
+      // combine the emoji itself and all shortcodes into an accessible label
   label = [nativeEmoji].concat(short_names).filter(Boolean).join(', '),
       title = null;
 
@@ -119,7 +151,9 @@ const NimbleEmoji = props => {
 
   if (props.native && unified) {
     className += ' emoji-mart-emoji-native';
-    style = { fontSize: props.size };
+    style = {
+      fontSize: props.size
+    };
     children = nativeEmoji;
 
     if (props.forceSize) {
@@ -135,14 +169,18 @@ const NimbleEmoji = props => {
       height: props.size,
       display: 'inline-block'
     };
+
     if (data.spriteUrl) {
-      style = _extends({}, style, {
+      style = _objectSpread(_objectSpread({}, style), {}, {
         backgroundImage: `url(${data.spriteUrl})`,
         backgroundSize: `${100 * (data.sheetColumns || 1)}% ${100 * (data.sheetRows || 1)}%`,
-        backgroundPosition: _getPosition(_extends({}, props, { sheetColumns: data.sheetColumns || 1, sheetRows: data.sheetRows || 1 }))
+        backgroundPosition: _getPosition(_objectSpread(_objectSpread({}, props), {}, {
+          sheetColumns: data.sheetColumns || 1,
+          sheetRows: data.sheetRows || 1
+        }))
       });
     } else {
-      style = _extends({}, style, {
+      style = _objectSpread(_objectSpread({}, style), {}, {
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -175,7 +213,7 @@ const NimbleEmoji = props => {
     props: {}
   };
 
-  if (props.onClick) {
+  if (props.onClick && props.useButton) {
     Tag.name = 'button';
     Tag.props = {
       type: 'button'
@@ -186,28 +224,23 @@ const NimbleEmoji = props => {
     style = _convertStyleToCSS(style);
     return `<${Tag.name} style='${style}' aria-label='${label}' ${title ? `title='${title}'` : ''} class='${className}'>${children || ''}</${Tag.name}>`;
   } else {
-    return React.createElement(
-      Tag.name,
-      _extends({
-        onClick: e => _handleClick(e, props),
-        onMouseEnter: e => _handleOver(e, props),
-        onMouseLeave: e => _handleLeave(e, props),
-        'aria-label': label,
-        title: title,
-        className: className
-      }, Tag.props),
-      React.createElement(
-        'span',
-        { style: style },
-        children
-      )
-    );
+    return /*#__PURE__*/React.createElement(Tag.name, _extends({
+      onClick: e => _handleClick(e, props),
+      onMouseEnter: e => _handleOver(e, props),
+      onMouseLeave: e => _handleLeave(e, props),
+      "aria-label": label,
+      title: title,
+      className: className
+    }, Tag.props), /*#__PURE__*/React.createElement("span", {
+      style: style
+    }, children));
   }
 };
 
-NimbleEmoji.propTypes /* remove-proptypes */ = _extends({}, EmojiPropTypes, {
+NimbleEmoji.propTypes
+/* remove-proptypes */
+= _objectSpread(_objectSpread({}, EmojiPropTypes), {}, {
   data: PropTypes.object.isRequired
 });
 NimbleEmoji.defaultProps = EmojiDefaultProps;
-
 export default NimbleEmoji;

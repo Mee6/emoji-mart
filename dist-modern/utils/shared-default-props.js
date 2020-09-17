@@ -2,14 +2,14 @@ const EmojiDefaultProps = {
   skin: 1,
   set: 'apple',
   sheetSize: 64,
-  sheetColumns: 52,
-  sheetRows: 52,
+  sheetColumns: 57,
+  sheetRows: 57,
   native: false,
   forceSize: false,
   tooltip: false,
-  backgroundImageFn: (set, sheetSize) => `https://unpkg.com/emoji-datasource-${set}@${'4.0.4'}/img/${set}/sheets-256/${sheetSize}.png`
+  useButton: true,
+  backgroundImageFn: (set, sheetSize) => `https://unpkg.com/emoji-datasource-${set}@${"5.0.1"}/img/${set}/sheets-256/${sheetSize}.png`
 };
-
 const PickerDefaultProps = {
   onClick: () => {},
   onSelect: () => {},
@@ -22,6 +22,7 @@ const PickerDefaultProps = {
   emoji: 'department_store',
   color: '#ae65c5',
   set: EmojiDefaultProps.set,
+  theme: 'light',
   skin: null,
   defaultSkin: EmojiDefaultProps.skin,
   native: EmojiDefaultProps.native,
@@ -30,14 +31,14 @@ const PickerDefaultProps = {
   emojisToShowFilter: null,
   showPreview: true,
   showSkinTones: true,
-  darkMode: !!(typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches),
   emojiTooltip: EmojiDefaultProps.tooltip,
+  useButton: EmojiDefaultProps.useButton,
   autoFocus: false,
+  enableFrequentEmojiSort: false,
   custom: [],
   skinEmoji: '',
   notFound: () => {},
   notFoundEmoji: 'sleuth_or_spy',
   icons: {}
 };
-
 export { PickerDefaultProps, EmojiDefaultProps };

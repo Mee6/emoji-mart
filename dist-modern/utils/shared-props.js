@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-
 const EmojiPropTypes = {
   data: PropTypes.object.isRequired,
   onOver: PropTypes.func,
@@ -10,15 +9,15 @@ const EmojiPropTypes = {
   native: PropTypes.bool,
   forceSize: PropTypes.bool,
   tooltip: PropTypes.bool,
+  useButton: PropTypes.bool,
   skin: PropTypes.oneOf([1, 2, 3, 4, 5, 6]),
   sheetSize: PropTypes.oneOf([16, 20, 32, 64]),
   sheetColumns: PropTypes.number,
   sheetRows: PropTypes.number,
-  set: PropTypes.oneOf(['apple', 'google', 'twitter', 'emojione', 'messenger', 'facebook']),
+  set: PropTypes.oneOf(['apple', 'google', 'twitter', 'facebook']),
   size: PropTypes.number.isRequired,
   emoji: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired
 };
-
 const PickerPropTypes = {
   onClick: PropTypes.func,
   onSelect: PropTypes.func,
@@ -39,10 +38,13 @@ const PickerPropTypes = {
   showPreview: PropTypes.bool,
   showSkinTones: PropTypes.bool,
   emojiTooltip: EmojiPropTypes.tooltip,
+  useButton: EmojiPropTypes.useButton,
+  theme: PropTypes.oneOf(['auto', 'light', 'dark']),
   include: PropTypes.arrayOf(PropTypes.string),
   exclude: PropTypes.arrayOf(PropTypes.string),
   recent: PropTypes.arrayOf(PropTypes.string),
   autoFocus: PropTypes.bool,
+  enableFrequentEmojiSort: PropTypes.bool,
   custom: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string.isRequired,
@@ -62,5 +64,4 @@ const PickerPropTypes = {
   notFoundEmoji: PropTypes.string,
   icons: PropTypes.object
 };
-
 export { EmojiPropTypes, PickerPropTypes };

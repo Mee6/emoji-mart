@@ -1,76 +1,80 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default class Anchors extends React.PureComponent {
   constructor(props) {
     super(props);
-
     let defaultCategory = props.categories.filter(category => category.first)[0];
-
     this.state = {
       selected: defaultCategory.name
     };
-
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(e) {
     var index = e.currentTarget.getAttribute('data-index');
-    var { categories, onAnchorClick } = this.props;
-
+    var {
+      categories,
+      onAnchorClick
+    } = this.props;
     onAnchorClick(categories[index], index);
   }
 
   render() {
-    var { categories, color, i18n, icons } = this.props,
-        { selected } = this.state;
+    var {
+      categories,
+      color,
+      i18n,
+      icons
+    } = this.props,
+        {
+      selected
+    } = this.state;
+    return /*#__PURE__*/React.createElement("nav", {
+      className: "emoji-mart-anchors",
+      "aria-label": i18n.categorieslabel
+    }, categories.map((category, i) => {
+      var {
+        id,
+        name,
+        anchor
+      } = category,
+          isSelected = name == selected;
 
-    return React.createElement(
-      'nav',
-      { className: 'emoji-mart-anchors', 'aria-label': i18n.categorieslabel },
-      categories.map((category, i) => {
-        var { id, name, anchor } = category,
-            isSelected = name == selected;
+      if (anchor === false) {
+        return null;
+      }
 
-        if (anchor === false) {
-          return null;
+      const iconId = id.startsWith('custom-') ? 'custom' : id;
+      return /*#__PURE__*/React.createElement("button", {
+        key: id,
+        "aria-label": i18n.categories[id],
+        title: i18n.categories[id],
+        "data-index": i,
+        type: 'button',
+        onClick: this.handleClick,
+        className: `emoji-mart-anchor ${isSelected ? 'emoji-mart-anchor-selected' : ''}`,
+        style: {
+          color: isSelected ? color : null
         }
-
-        const iconId = id.startsWith('custom-') ? 'custom' : id;
-
-        return React.createElement(
-          'button',
-          {
-            key: id,
-            'aria-label': i18n.categories[id],
-            title: i18n.categories[id],
-            'data-index': i,
-            type: 'button',
-            onClick: this.handleClick,
-            className: `emoji-mart-anchor ${isSelected ? 'emoji-mart-anchor-selected' : ''}`,
-            style: { color: isSelected ? color : null }
-          },
-          React.createElement(
-            'div',
-            { className: 'emoji-mart-anchor-icon' },
-            icons.categories[iconId]()
-          ),
-          React.createElement('span', {
-            className: 'emoji-mart-anchor-bar',
-            style: { backgroundColor: color }
-          })
-        );
-      })
-    );
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "emoji-mart-anchor-icon"
+      }, icons.categories[iconId]()), /*#__PURE__*/React.createElement("span", {
+        className: "emoji-mart-anchor-bar",
+        style: {
+          backgroundColor: color
+        }
+      }));
+    }));
   }
-}
 
-Anchors.propTypes /* remove-proptypes */ = {
+}
+Anchors.propTypes
+/* remove-proptypes */
+= {
   categories: PropTypes.array,
   onAnchorClick: PropTypes.func,
   icons: PropTypes.object
 };
-
 Anchors.defaultProps = {
   categories: [],
   onAnchorClick: () => {},
