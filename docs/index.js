@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { Picker, Emoji } from '../src'
+import { Picker, Emoji } from '../dist'
 
 const CUSTOM_EMOJIS = [
   {
     name: 'Party Parrot',
-    short_names: ['parrot'],
-    keywords: ['party'],
+    short_names: ['party_parrot'],
+    keywords: ['party', 'parrot'],
     imageUrl: './images/parrot.gif',
   },
   {
@@ -22,18 +22,6 @@ const CUSTOM_EMOJIS = [
     keywords: ['github'],
     imageUrl: 'https://github.githubassets.com/images/icons/emoji/shipit.png',
   },
-  {
-    name: 'Test Flag',
-    short_names: ['test'],
-    keywords: ['test', 'flag'],
-    spriteUrl:
-      'https://unpkg.com/emoji-datasource-twitter@4.0.4/img/twitter/sheets-256/64.png',
-    sheet_x: 1,
-    sheet_y: 1,
-    size: 64,
-    sheetColumns: 52,
-    sheetRows: 52,
-  },
 ]
 
 class Example extends React.Component {
@@ -42,9 +30,11 @@ class Example extends React.Component {
     this.state = {
       native: true,
       set: 'apple',
+      theme: 'auto',
       emoji: 'point_up',
       title: 'Pick your emoji…',
       custom: CUSTOM_EMOJIS,
+      useButton: false,
     }
   }
 
@@ -57,15 +47,7 @@ class Example extends React.Component {
 
         <div className="row sets">
           Set: 
-          {[
-            'native',
-            'apple',
-            'google',
-            'twitter',
-            'emojione',
-            'messenger',
-            'facebook',
-          ].map((set) => {
+          {['native', 'apple', 'google', 'twitter', 'facebook'].map((set) => {
             var props = {
               disabled: !this.state.native && set == this.state.set,
             }
@@ -95,33 +77,19 @@ class Example extends React.Component {
 
         <div className="row-small sets">
           Theme: 
-
-          <button
-            disabled={this.state.darkMode == undefined}
-            onClick={() => {
-              this.setState({ darkMode: undefined })
-            }}
-          >
-            auto
-          </button>
-
-          <button
-            disabled={this.state.darkMode == false}
-            onClick={() => {
-              this.setState({ darkMode: false })
-            }}
-          >
-            light
-          </button>
-
-          <button
-            disabled={this.state.darkMode}
-            onClick={() => {
-              this.setState({ darkMode: true })
-            }}
-          >
-            dark
-          </button>
+          {['auto', 'light', 'dark'].map((theme) => {
+            return (
+              <button
+                key={theme}
+                disabled={theme == this.state.theme}
+                onClick={() => {
+                  this.setState({ theme })
+                }}
+              >
+                {theme}
+              </button>
+            )
+          })}
         </div>
 
         <div className="row">

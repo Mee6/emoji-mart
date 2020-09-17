@@ -5,6 +5,8 @@ sudo: false
 script: yarn test
 before_script:
 - yarn prettier:check
+- yarn test:size
+- yarn test:ssr
 branches:
   only:
   - master
